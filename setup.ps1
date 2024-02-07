@@ -6,8 +6,8 @@ param(
 )
 
 function Is-Admin() {
-    $current_principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    return $current_principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    return $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 function Enforce-Tls() {
@@ -23,18 +23,18 @@ function Enforce-Tls() {
     }
 }
 
-function Fetch-SHA512($source, $file_name) {
+function Fetch-SHA512($source, $fileName) {
     $response = Invoke-WebRequest $source -UseBasicParsing
 
     $data = $response.Content.split("`n")
 
     foreach ($line in $data) {
-        $split_line = $line.Split(" ", 2)
-        $hash = $split_line[0]
-        $current_file_name = $split_line[1].Trim()
+        $splitLine = $line.Split(" ", 2)
+        $hash = $splitLine[0]
+        $currentFileName = $splitLine[1].Trim()
 
-        if ($null -ne $hash -and $null -ne $current_file_name) {
-            if ($current_file_name -eq $file_name) {
+        if ($null -ne $hash -and $null -ne $currentFileName) {
+            if ($currentFileName -eq $fileName) {
                 return $hash
             }
         }
@@ -62,19 +62,19 @@ function main() {
         return 1
     }
 
-    $firefox_versions = ConvertFrom-Json $response.Content
-    $setup_file = "$($env:temp)\FirefoxSetup.exe"
-    $remote_version = if ($version) { $version } else { $firefox_versions.LATEST_FIREFOX_VERSION }
-    $download_url = "https://releases.mozilla.org/pub/firefox/releases/$($remote_version)/win64/$($lang)/Firefox%20Setup%20$($remote_version).exe"
-    $install_dir = "C:\Program Files\Mozilla Firefox"
-    $hash_source = "https://ftp.mozilla.org/pub/firefox/releases/$($remote_version)/SHA512SUMS"
+    $firefoxVersions = ConvertFrom-Json $response.Content
+    $setupFile = "$($env:temp)\FirefoxSetup.exe"
+    $remoteVersion = if ($version) { $version } else { $firefoxVersions.LATEST_FIREFOX_VERSION }
+    $downloadUrl = "https://releases.mozilla.org/pub/firefox/releases/$($remoteVersion)/win64/$($lang)/Firefox%20Setup%20$($remoteVersion).exe"
+    $installDir = "C:\Program Files\Mozilla Firefox"
+    $hashSource = "https://ftp.mozilla.org/pub/firefox/releases/$($remoteVersion)/SHA512SUMS"
 
     # check if currently installed version is already latest
-    if (Test-Path "$($install_dir)\firefox.exe") {
-        $local_version = (Get-Item "$($install_dir)\firefox.exe").VersionInfo.ProductVersion
+    if (Test-Path "$($installDir)\firefox.exe") {
+        $localVersion = (Get-Item "$($installDir)\firefox.exe").VersionInfo.ProductVersion
 
-        if ($local_version -eq $remote_version) {
-            Write-Host "info: Mozilla Firefox $($remote_version) already installed"
+        if ($localVersion -eq $remoteVersion) {
+            Write-Host "info: Mozilla Firefox $($remoteVersion) already installed"
 
             if ($force) {
                 Write-Host "warning: -force specified, proceeding anyway"
@@ -84,25 +84,25 @@ function main() {
         }
     }
 
-    Write-Host "info: downloading firefox $($remote_version) setup"
-    Invoke-WebRequest $download_url -OutFile $setup_file
+    Write-Host "info: downloading firefox $($remoteVersion) setup"
+    Invoke-WebRequest $downloadUrl -OutFile $setupFile
 
-    if (-not (Test-Path $setup_file)) {
+    if (-not (Test-Path $setupFile)) {
         Write-Host "error: failed to download setup file"
         return 1
     }
 
     if (-not $skip_hash_check) {
         Write-Host "info: checking SHA512"
-        $local_SHA512 = (Get-FileHash -Path $setup_file -Algorithm SHA512).Hash
-        $remote_SHA512 = Fetch-SHA512 -source $hash_source -file_name "win64/$($lang)/Firefox Setup $($remote_version).exe"
+        $localSHA512 = (Get-FileHash -Path $setupFile -Algorithm SHA512).Hash
+        $remoteSHA512 = Fetch-SHA512 -source $hashSource -fileName "win64/$($lang)/Firefox Setup $($remoteVersion).exe"
 
-        if ($null -eq $remote_SHA512) {
+        if ($null -eq $remoteSHA512) {
             Write-Host "error: unable to find hash"
             return 1
         }
 
-        if ($local_SHA512 -ne $remote_SHA512) {
+        if ($localSHA512 -ne $remoteSHA512) {
             Write-Host "error: hash mismatch"
             return 1
         }
@@ -114,12 +114,12 @@ function main() {
     Stop-Process -Name "firefox" -ErrorAction SilentlyContinue
 
     # start installation
-    Start-Process -FilePath $setup_file -ArgumentList "/S /MaintenanceService=false" -Wait
+    Start-Process -FilePath $setupFile -ArgumentList "/S /MaintenanceService=false" -Wait
 
     # remove installer binary
-    Remove-Item $setup_file
+    Remove-Item $setupFile
 
-    $remove_files = @(
+    $removeFiles = @(
         "crashreporter.exe",
         "crashreporter.ini",
         "defaultagent.ini",
@@ -134,14 +134,14 @@ function main() {
     )
 
     # remove files
-    foreach ($file in $remove_files) {
-        $file = "$($install_dir)\$($file)"
+    foreach ($file in $removeFiles) {
+        $file = "$($installDir)\$($file)"
         if (Test-Path $file) {
             Remove-Item $file
         }
     }
 
-    $policies_content = @{
+    $policiesContent = @{
         policies = @{
             DisableAppUpdate     = $true
             OverrideFirstRunPage = ""
@@ -155,12 +155,12 @@ function main() {
         }
     }
 
-    $autoconfig_content = @(
+    $autoconfigContent = @(
         "pref(`"general.config.filename`", `"firefox.cfg`");",
         "pref(`"general.config.obscure_value`", 0);"
     ) -join "`n"
 
-    $firefox_config_content =
+    $firefoxConfigContent =
     "`r`ndefaultPref(`"app.shield.optoutstudies.enabled`", false)`
 defaultPref(`"datareporting.healthreport.uploadEnabled`", false)`
 defaultPref(`"browser.newtabpage.activity-stream.feeds.section.topstories`", false)`
@@ -178,21 +178,21 @@ lockPref(`"browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons`", f
 lockPref(`"browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features`", false)"
 
     # create "distribution" folder for policies.json
-    (New-Item -Path "$($install_dir)" -Name "distribution" -ItemType "directory" -Force) 2>&1 > $null
+    (New-Item -Path "$($installDir)" -Name "distribution" -ItemType "directory" -Force) 2>&1 > $null
     # write to policies.json
-    Set-Content -Path "$($install_dir)\distribution\policies.json" -Value (ConvertTo-Json -InputObject $policies_content -Depth 10)
+    Set-Content -Path "$($installDir)\distribution\policies.json" -Value (ConvertTo-Json -InputObject $policiesContent -Depth 10)
 
     # write to autoconfig.js
-    Set-Content -Path "$($install_dir)\defaults\pref\autoconfig.js" -Value $autoconfig_content
+    Set-Content -Path "$($installDir)\defaults\pref\autoconfig.js" -Value $autoconfigContent
 
     # write to firefox.cfg
-    Set-Content -Path "$($install_dir)\firefox.cfg" -Value $firefox_config_content
+    Set-Content -Path "$($installDir)\firefox.cfg" -Value $firefoxConfigContent
 
-    Write-Host "info: release notes: https:/www.mozilla.org/en-US/firefox/$($remote_version)/releasenotes"
+    Write-Host "info: release notes: https:/www.mozilla.org/en-US/firefox/$($remoteVersion)/releasenotes"
 
     return 0
 }
 
-$_exit_code = main
+$_exitCode = main
 Write-Host # new line
-exit $_exit_code
+exit $_exitCode
