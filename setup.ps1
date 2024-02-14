@@ -63,7 +63,7 @@ function main() {
     }
 
     $firefoxVersions = ConvertFrom-Json $response.Content
-    $setupFile = "$($env:temp)\FirefoxSetup.exe"
+    $setupFile = "$($env:TEMP)\FirefoxSetup.exe"
     $remoteVersion = if ($version) { $version } else { $firefoxVersions.LATEST_FIREFOX_VERSION }
     $downloadUrl = "https://releases.mozilla.org/pub/firefox/releases/$($remoteVersion)/win64/$($lang)/Firefox%20Setup%20$($remoteVersion).exe"
     $installDir = "C:\Program Files\Mozilla Firefox"
