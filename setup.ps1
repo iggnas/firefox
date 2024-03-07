@@ -117,7 +117,7 @@ function main() {
     Start-Process -FilePath $setupFile -ArgumentList "/S /MaintenanceService=false" -Wait
 
     # remove installer binary
-    Remove-Item $setupFile
+    Remove-Item $setupFile -Force
 
     $removeFiles = @(
         "crashreporter.exe",
@@ -137,7 +137,7 @@ function main() {
     foreach ($file in $removeFiles) {
         $file = "$($installDir)\$($file)"
         if (Test-Path $file) {
-            Remove-Item $file
+            Remove-Item $file -Force
         }
     }
 
