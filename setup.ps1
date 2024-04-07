@@ -193,9 +193,14 @@ lockPref(`"browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features`",
     Write-Host "info: release notes: https:/www.mozilla.org/en-US/firefox/$($remoteVersion)/releasenotes"
 
     $ProfilePath = (Get-ChildItem "$env:APPDATA\Mozilla\Firefox\Profiles" | Where-Object { $_.Name -like "*default-release*" }).FullName
+    if ($ProfilePath) {
+    Write-Host "Firefox profile directory found."
+    Write-Host "Installing user.js"
     Invoke-WebRequest "https://raw.githubusercontent.com/iggnas/firefox-user.js-insaller/main/NarsilFork.js" -OutFile "$ProfilePath\user.js"
-
-
+    } else {
+    Write-Host "Firefox profile directory was not found."
+    }
+    
     return 0
 }
 
