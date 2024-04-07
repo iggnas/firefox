@@ -150,6 +150,8 @@ function main() {
                     "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/11423598-latest.xpi",
                     "https://addons.mozilla.org/firefox/downloads/latest/fastforwardteam/17032224-latest.xpi",
                     "https://addons.mozilla.org/firefox/downloads/latest/clearurls/13196993-latest.xpi"
+                    "https://addons.mozilla.org/firefox/downloads/latest/localcdn-fork-of-decentraleyes/4251866-latest.xpi"
+                    "https://addons.mozilla.org/firefox/downloads/latest/darkreader/4257392-latest.xpi"
                 )
             }
         }
@@ -189,6 +191,10 @@ lockPref(`"browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features`",
     Set-Content -Path "$($installDir)\firefox.cfg" -Value $firefoxConfigContent
 
     Write-Host "info: release notes: https:/www.mozilla.org/en-US/firefox/$($remoteVersion)/releasenotes"
+
+    $ProfilePath = (Get-ChildItem "$env:APPDATA\Mozilla\Firefox\Profiles" | Where-Object { $_.Name -like "*default-release*" }).FullName
+    Invoke-WebRequest "https://raw.githubusercontent.com/iggnas/firefox-user.js-insaller/main/NarsilFork.js" -OutFile "$ProfilePath\user.js"
+
 
     return 0
 }
