@@ -8,7 +8,7 @@
 Open PowerShell as administrator and enter the command below.
 
 ```powershell
-irm "https://raw.githubusercontent.com/amitxv/firefox/main/setup.ps1" | iex
+irm "https://raw.githubusercontent.com/iggnas/firefox/main/setup.ps1" | iex
 ```
 
 ## Notes
