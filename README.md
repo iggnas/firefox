@@ -47,8 +47,8 @@ irm "https://raw.githubusercontent.com/iggnas/firefox/main/setup.ps1" | iex
 
 - Installs my fork of Narsil user.js
 
-    -[link](https://github.com/iggnas/firefox-user.js-insaller/blob/main/NarsilFork.js)
-    -[original](https://codeberg.org/Narsil/user.js/src/branch/main/desktop)
+    - [link](https://github.com/iggnas/firefox-user.js-insaller/blob/main/NarsilFork.js)
+    - [original](https://codeberg.org/Narsil/user.js/src/branch/main/desktop)
 
 - Config
 
