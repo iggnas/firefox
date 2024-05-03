@@ -40,15 +40,9 @@ irm "https://raw.githubusercontent.com/iggnas/firefox/main/setup.ps1" | iex
 - Automatically install recommended extensions
 
     - [uBlock Origin](https://addons.mozilla.org/en-GB/firefox/addon/ublock-origin)
-    - [FastForward](https://addons.mozilla.org/en-GB/firefox/addon/fastforwardteam)
-    - [ClearURLs](https://addons.mozilla.org/en-GB/firefox/addon/clearurls)
     - [Dark Reader](https://addons.mozilla.org/en-US/firefox/addon/darkreader/)
     - [LocalCDN](https://addons.mozilla.org/en-US/firefox/addon/localcdn-fork-of-decentraleyes/)
-
-- Installs my fork of Narsil user.js
-
-    - [link](https://github.com/iggnas/firefox-user.js-insaller/blob/main/NarsilFork.js)
-    - [original](https://codeberg.org/Narsil/user.js/src/branch/main/desktop)
+      
 
 - Config
 
