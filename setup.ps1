@@ -148,8 +148,8 @@ function main() {
             Extensions           = @{
                 Install = @(
                     "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/11423598-latest.xpi",
-                    "https://addons.mozilla.org/firefox/downloads/latest/fastforwardteam/17032224-latest.xpi",
-                    "https://addons.mozilla.org/firefox/downloads/latest/clearurls/13196993-latest.xpi"
+#                   "https://addons.mozilla.org/firefox/downloads/latest/fastforwardteam/17032224-latest.xpi" Use ublock list
+#                   "https://addons.mozilla.org/firefox/downloads/latest/clearurls/13196993-latest.xpi" Use ublock list
                     "https://addons.mozilla.org/firefox/downloads/latest/localcdn-fork-of-decentraleyes/4251866-latest.xpi"
                     "https://addons.mozilla.org/firefox/downloads/latest/darkreader/4257392-latest.xpi"
                 )
