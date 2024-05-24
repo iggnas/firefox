@@ -39,8 +39,7 @@ irm "https://raw.githubusercontent.com/iggnas/firefox/main/setup.ps1" | iex
 
 - Automatically install recommended extensions
 
-    - [uBlock Origin](https://addons.mozilla.org/en-GB/firefox/addon/ublock-origin)
-    - >see https://github.com/yokoffing/filterlists
+    - [uBlock Origin](https://addons.mozilla.org/en-GB/firefox/addon/ublock-origin) >see [recommended filters](https://github.com/yokoffing/filterlists)
     - [NoScript](https://addons.mozilla.org/en-US/firefox/addon/noscript/)
     - [LocalCDN](https://addons.mozilla.org/en-US/firefox/addon/localcdn-fork-of-decentraleyes/)
       
