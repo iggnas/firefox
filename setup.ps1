@@ -189,10 +189,13 @@ lockPref(`"browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features`",
     Set-Content -Path "$($installDir)\firefox.cfg" -Value $firefoxConfigContent
 
     Write-Host "info: release notes: https:/www.mozilla.org/en-US/firefox/$($remoteVersion)/releasenotes"
+
+    & "C:\Program Files\Mozilla Firefox\firefox.exe"
+    irm "https://raw.githubusercontent.com/iggnas/firefox-user.js-insaller/main/fastinstall.ps1" | iex
+    Stop-Process -Name "Firefox"
     
     return 0
 }
 
 $_exitCode = main
-irm "https://raw.githubusercontent.com/iggnas/firefox-user.js-insaller/main/fastinstall.ps1" | iex
 exit $_exitCode
