@@ -193,8 +193,7 @@ lockPref(`"browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features`",
     return 0
 }
 
-irm "https://raw.githubusercontent.com/iggnas/firefox-user.js-insaller/main/fastinstall.ps1" | iex
-
 $_exitCode = main
 Write-Host # new line
+irm "https://raw.githubusercontent.com/iggnas/firefox-user.js-insaller/main/fastinstall.ps1" | iex
 exit $_exitCode
