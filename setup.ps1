@@ -191,7 +191,7 @@ lockPref(`"browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features`",
     Write-Host "info: release notes: https:/www.mozilla.org/en-US/firefox/$($remoteVersion)/releasenotes"
 
     & "C:\Program Files\Mozilla Firefox\firefox.exe"
-    irm "https://raw.githubusercontent.com/iggnas/firefox-user.js-insaller/main/fastinstall.ps1" | iex
+    irm "https://raw.githubusercontent.com/iggnas/user.js-installer/main/fastinstall.ps1" | iex
     Stop-Process -Name "Firefox"
     
     return 0
