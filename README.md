@@ -1,3 +1,6 @@
+# Important
+I think this script is currently broken as it was not working for me when I last tried
+
 # Firefox
 
 > [!IMPORTANT]
