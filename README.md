@@ -1,6 +1,5 @@
 # Important
-I think this script is currently broken as it was not working for me when I last tried
-
+As of rn script work only to some extent
 # Firefox
 
 > [!IMPORTANT]
